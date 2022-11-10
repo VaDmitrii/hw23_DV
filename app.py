@@ -1,17 +1,23 @@
-import os
+from flask import Flask, request, jsonify
 
-from flask import Flask
+from utils import result_data
 
 app = Flask(__name__)
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "data")
 
 
 @app.route("/perform_query")
 def perform_query():
-    # получить параметры query и file_name из request.args, при ошибке вернуть ошибку 400
-    # проверить, что файла file_name существует в папке DATA_DIR, при ошибке вернуть ошибку 400
-    # с помощью функционального программирования (функций filter, map), итераторов/генераторов сконструировать запрос
-    # вернуть пользователю сформированный результат
-    return app.response_class('', content_type="text/plain")
+    try:
+        file_name = request.args.get("file_name")
+        cmd1 = request.args.get("cmd1")
+        value1 = request.args.get("value1")
+        cmd2 = request.args.get("cmd2")
+        value2 = request.args.get("value2")
+    except (KeyError, ValueError) as error:
+        return jsonify(error.messages), 400
+    commands_list = {cmd1: value1, cmd2: value2}
+    return list(result_data(file_name, commands_list))
+
+
+if __name__ == '__main__':
+    app.run()

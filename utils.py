@@ -46,5 +46,5 @@ def result_data(file_name: str, commands_dict: dict):
     if 'limit' in commands_dict.keys():
         result = limit_result(result, commands_dict['limit'])
     elif "unique" in commands_dict.keys():
-        result = set(result)
+        result = list(set(result))
     return result

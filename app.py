@@ -16,7 +16,8 @@ def perform_query():
     except (KeyError, ValueError) as error:
         return jsonify(error.messages), 400
     commands_list = {cmd1: value1, cmd2: value2}
-    return list(result_data(file_name, commands_list))
+    result = result_data(file_name, commands_list)
+    return jsonify(result)
 
 
 if __name__ == '__main__':
